@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import {
   Image,
+  ScrollView,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -12,8 +13,9 @@ import { liste } from '../assets/libs/donnees.js';
 
 function Galerie() {
   const [ index, setIndex ] = useState(0);
+  const [ ferme, setFerme ] = useState(false);
+  const nomBouton = ferme ? "Fermer description" : "Afficher description";
 
-  //let index = 0;
 
   function gestion() {
     if(index < liste.length - 1){
@@ -62,8 +64,18 @@ function Galerie() {
       </Text>
       <Image style={styles.image}
         source={image} 
-        
       />
+      <TouchableOpacity  onPress={() => setFerme(!ferme)}>
+        <Text style={styles.styleBouton}>
+          {nomBouton}
+        </Text>
+      </TouchableOpacity>
+      <ScrollView style={{flexGrow:0}} contentContainerStyle={styles.contentContainer}>
+        <Text style={{textAlign:'center', paddingHorizontal:10}}>
+        {!ferme && oeuvre.desc}
+        </Text>
+      </ScrollView>
+      
      
     </View>
   );
@@ -81,7 +93,8 @@ const styles = StyleSheet.create(
       alignItems:'center',
       justifyContent:'center',
       flex:1,
-      
+      alignContent:'center',
+      gap:10,
     },
     bouton:{
       flexDirection:'row',
@@ -90,8 +103,8 @@ const styles = StyleSheet.create(
       gap:10,
     },
     styleBouton:{
-      height:30,
-      width:80,
+      height:40,
+      width:100,
       backgroundColor:'blue',
       color:'white',
       alignContent:'center',
@@ -99,7 +112,13 @@ const styles = StyleSheet.create(
       justifyContent:'center',
       textAlignVertical:'center',
       borderRadius:10
-    }
+    },
+    contentContainer:{
+      paddingVertical: 20,
+      alignItems: 'center',
+      paddingVertical: 20,
+      textAlign: 'center',
+    },
 
   }
 )
