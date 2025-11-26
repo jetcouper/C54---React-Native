@@ -1,20 +1,27 @@
+import { useState } from 'react';
 import {
   Alert,
   FlatList,
   StyleSheet,
   Text,
-  TouchableOpacity
+  TextInput,
+  TouchableOpacity,
+  View,
 } from 'react-native';
 
 import { merveillesDuMondeModerne } from '../assets/libs/merveilles.js';
 
+
 function Liste(){
+  const [ recherche, setRecherche ] = useState('');
+  const [ filteredData, setFilteredData ] = useState(merveillesDuMondeModerne);
 
   const renderListItem = ({ item }) => (
-    <TouchableOpacity onPress={() => itemPress(item)} style={styles.itemContainer}>
-      <Text style={styles.titleText}>{item.nom}</Text>
-      <Text style={styles.descriptionText}>{item.lieu}</Text>
-    </TouchableOpacity >
+      <TouchableOpacity onPress={() => itemPress(item)} style={styles.itemContainer}>
+        <Text style={styles.titleText}>{item.nom}</Text>
+        <Text style={styles.descriptionText}>{item.lieu}</Text>
+      </TouchableOpacity >
+    
   );
 
   const itemPress = (item) => {
@@ -28,14 +35,28 @@ function Liste(){
               {cancelable: true}
             );
   };
+
+  const rechercheText = (text) => {
+    setRecherche(text);
+    if(text.length === 0) {
+      setFilteredData(merveillesDuMondeModerne);
+      return;
+    }
+    else {
+      setFilteredData(merveillesDuMondeModerne.filter((item) => item.nom.toLowerCase().includes(text.toLowerCase())));
+    }
+  }
   
 
   return (
-    <FlatList
-      data={merveillesDuMondeModerne}
-      renderItem={renderListItem}
-      keyExtractor={(item) => item.id.toString()}
-    />
+    <View>
+      <TextInput style={styles.zoneInput} value={recherche} onChangeText={rechercheText}></TextInput>
+      <FlatList
+        data={filteredData}
+        renderItem={renderListItem}
+        keyExtractor={(item) => item.id.toString()}
+      />
+    </View>
   );
 }
 
@@ -54,6 +75,10 @@ const styles = StyleSheet.create({
     color: '#666',
     marginTop: 5,
   },
+  zoneInput: {
+    backgroundColor: '#b3aaaaff',
+  },
+
 });
 
 export default Liste;
