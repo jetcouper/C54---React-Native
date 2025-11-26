@@ -17,7 +17,7 @@ function Liste(){
   const [ filteredData, setFilteredData ] = useState(merveillesDuMondeModerne);
 
   const renderListItem = ({ item }) => (
-      <TouchableOpacity onPress={() => itemPress(item)} style={styles.itemContainer}>
+      <TouchableOpacity onPress={() => itemPress(item)} >
         <Text style={styles.titleText}>{item.nom}</Text>
         <Text style={styles.descriptionText}>{item.lieu}</Text>
       </TouchableOpacity >
@@ -29,7 +29,6 @@ function Liste(){
               [
                 {
                   text: 'OK',
-                  onPress: () => console.log('OK Pressed for ' + item.description),
                 },
               ],
               {cancelable: true}
@@ -55,15 +54,23 @@ function Liste(){
         data={filteredData}
         renderItem={renderListItem}
         keyExtractor={(item) => item.id.toString()}
+        ItemSeparatorComponent={<View style={styles.separateur}></View>}
       />
+      
     </View>
   );
 }
 
 const styles = StyleSheet.create({
+  separateur:{
+    padding: 10,
+    borderBottomWidth: 2,
+    borderBottomColor: '#ccc',
+  },
+
   itemContainer: {
-    padding: 15,
-    borderBottomWidth: 1,
+    padding: 10,
+    borderBottomWidth: 2,
     borderBottomColor: '#ccc',
   },
   titleText: {

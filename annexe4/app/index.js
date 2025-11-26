@@ -17,43 +17,35 @@ function Galerie() {
   const nomBouton = ferme ? "Fermer description" : "Afficher description";
 
 
-  function gestion() {
+  function suivant() {
     if(index < liste.length - 1){
       setIndex(index + 1);
-      console.log('Index: ',{index})
     }
-    if(index == liste.length - 1){
+    else{
       setIndex(0)
-      console.log('Index: ',{index})
     }
   } 
-  function gestionPrec() {
+  function precedant() {
     if(index == 0){
       setIndex(liste.length -1);
-      console.log('Index: ',{index})
     }
 
     else{
       setIndex(index -1)
-      console.log('Index: ',{index})
     }
   } 
 
   let oeuvre = liste[index];
   const image = { uri: oeuvre.url };
   return (
-    
+    <ScrollView style={{flexGrow:0}} contentContainerStyle={styles.contentContainer}>
     <View style={styles.main}>
       <View style={styles.bouton}>
-        <TouchableOpacity style={styles.styleBouton} onPress={gestion} title="suivant">
-              <Text style={styles.styleBouton}>
-                Suivant
-              </Text>
+        <TouchableOpacity style={styles.styleBouton} onPress={suivant} title="suivant">
+              <Text style={styles.styleBouton}>Suivant</Text>
         </TouchableOpacity>
-        <TouchableOpacity onPress={gestionPrec} title="Précédent">
-              <Text style={styles.styleBouton}>
-                Précédent
-              </Text>
+        <TouchableOpacity onPress={precedant} title="Précédent">
+              <Text style={styles.styleBouton}>Précédent</Text>
         </TouchableOpacity>
       </View>
       <Text>
@@ -70,20 +62,22 @@ function Galerie() {
           {nomBouton}
         </Text>
       </TouchableOpacity>
-      <ScrollView style={{flexGrow:0}} contentContainerStyle={styles.contentContainer}>
-        <Text style={{textAlign:'center', paddingHorizontal:10}}>
+      
+        <Text style={styles.texte}>
         {!ferme && oeuvre.desc}
         </Text>
-      </ScrollView>
-      
-     
     </View>
+    </ScrollView>
   );
 }
 
 
 const styles = StyleSheet.create(
   {
+    texte:{
+        textAlign:'center', 
+        paddingHorizontal:10
+    },
     image : {
       width:160,
       height:160,
