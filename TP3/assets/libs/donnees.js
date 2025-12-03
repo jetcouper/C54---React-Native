@@ -1,0 +1,51 @@
+export const commercesInfo = [
+    {
+      id:1,
+      nom: "IGA Extra",
+      description: "Épicerie Marchés Lambert",
+      latitude:'45.52351559487476',
+      longitude:'-73.30318677252134',
+    },
+    {
+      id:2,
+      nom: "SAQ",
+      description: "Boutique de vin",
+      latitude:'45.52207831110238',
+      longitude:'-73.30204046036683',
+    },
+    {
+      id:3,
+      nom: "Chico",
+      description: "Boutique d'animaux",
+      latitude:'45.53010051189456',
+      longitude:'-73.28936658660126',
+    },
+    {
+      id:4,
+      nom: "Au Vieux Duluth",
+      description: "Restaurant 4.3 étoile.",
+      latitude:'45.52679856525917',
+      longitude:'-73.30003633343976',
+    },
+    {
+      id:5,
+      nom: "Aréna Jean-Rougeau",
+      description: "Aréna municipale",
+      latitude:'45.51571385122194',
+      longitude:'-73.29372546900352',
+    },
+    {
+      id:6,
+      nom: "Édifice Léon-Taillon",
+      description: "Ministère des Travaux publics",
+      latitude:'45.508385092306206',
+      longitude:'-73.28093368810717',
+    },
+    {
+      id:7,
+      nom: "Parc du Ruisseau",
+      description: "Parc",
+      latitude:'45.51487328131343',
+      longitude:'-73.29237079819347',
+    },
+  ];

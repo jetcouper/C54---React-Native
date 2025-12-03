@@ -37,19 +37,20 @@ function Liste(){
 
   const rechercheText = (text) => {
     setRecherche(text);
-    if(text.length === 0) {
+    if(text === '') {
       setFilteredData(merveillesDuMondeModerne);
       return;
     }
     else {
-      setFilteredData(merveillesDuMondeModerne.filter((item) => item.nom.toLowerCase().includes(text.toLowerCase())));
+      let filtre = merveillesDuMondeModerne.filter((item) => item.nom.toLowerCase().includes(text.toLowerCase()))
+      setFilteredData(filtre);
     }
   }
   
 
   return (
     <View>
-      <TextInput style={styles.zoneInput} value={recherche} onChangeText={rechercheText}></TextInput>
+      <TextInput placeholder='Recherche' style={styles.zoneInput} value={recherche} onChangeText={rechercheText}></TextInput>
       <FlatList
         data={filteredData}
         renderItem={renderListItem}
