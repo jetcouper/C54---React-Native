@@ -11,7 +11,6 @@ export default function Index() {
         <Text>Ville: Saint-Basile-Le-Grand</Text>
         <Image style={styles.image} resizeMode="contain" source={imageVille}></Image>
         <Link style={styles.lien} href="pages/pageCoordonnee">Suivant</Link>
-        <Link style={styles.lien} href="pages/pageCarte">Carte</Link>
     </View>
   );
 }

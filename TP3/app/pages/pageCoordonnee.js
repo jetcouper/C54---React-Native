@@ -1,7 +1,8 @@
 import Slider from '@react-native-community/slider';
 import * as Location from 'expo-location';
+import { router } from "expo-router";
 import { useEffect, useState } from 'react';
-import { FlatList, StyleSheet, Text, View } from 'react-native';
+import { FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 import { commerces } from '../../assets/libs/donnees.js';
 
@@ -35,6 +36,10 @@ const pageCoordonnee = () => {
         getCurrentLocation();
     }, []);
 
+
+
+    
+
     const filtrerRechercheAvecLocation = (value, loc) => {
 
         setValeurSlide(value)
@@ -64,8 +69,21 @@ const pageCoordonnee = () => {
 
     }
 
+    const pageCarte = (item) => {
+        router.push({pathname: 'pages/pageCarte' , params:{id: String(item.id), 
+                                                            nom: item.nom, 
+                                                            description: item.description, 
+                                                            latitude: String(item.latitude),
+                                                            longitude: String(item.longitude),
+                                                            maLatitude: String(location.coords.latitude),
+                                                            maLongitude: String(location.coords.longitude)}})
+    }
+
+
     const renderListItem = ({ item }) => (
-        <Text style={styles.titleText}>{item.nom}</Text>
+        <TouchableOpacity onPress={() => pageCarte(item)}>
+            <Text style={styles.titleText}>{item.nom}</Text>
+        </TouchableOpacity>
 
     );
     const filtrerRecherche = (value) => {
@@ -105,6 +123,7 @@ const pageCoordonnee = () => {
                         </Text>
                     </View>
                     <FlatList
+                    
                         style={styles.flat}
                         data={filteredData}
                         renderItem={renderListItem}

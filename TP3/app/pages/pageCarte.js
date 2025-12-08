@@ -1,110 +1,94 @@
-import * as Location from 'expo-location';
-import { useEffect, useState } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-import MapView from 'react-native-maps';
+import { useLocalSearchParams } from 'expo-router';
+import { useEffect, useRef } from 'react';
+import { StyleSheet, View } from 'react-native';
+import MapView, { Marker } from 'react-native-maps';
 
 
-const pageCarte = () => {
-    const [location, setLocation] = useState(null);
-    const [errorMsg, setErrorMsg] = useState("");
+const PageCarte = () => {
+    const params = useLocalSearchParams();
+    const mapRef = useRef(null);
 
     useEffect(() => {
-        async function getCurrentLocation() {
+        if (mapRef.current && params.maLatitude && params.maLongitude && params.latitude && params.longitude) {
+            const coordinates = [
+                { latitude: parseFloat(params.maLatitude), longitude: parseFloat(params.maLongitude) },
+                { latitude: parseFloat(params.latitude), longitude: parseFloat(params.longitude) },
+            ];
 
-            let { status } = await Location.requestForegroundPermissionsAsync();
-            if (status !== 'granted') {
-                setErrorMsg('La permission est refusée.');
-                return;
-            }
-
-            try {
-                let location = await Location.getCurrentPositionAsync({
-                    accuracy: Location.Accuracy.High
+            setTimeout(() => {
+                mapRef.current?.fitToCoordinates(coordinates, {
+                    edgePadding: { top: 50, right: 50, bottom: 50, left: 50 },
+                    animated: true,
                 });
-                setLocation(location)
-                //filtrerRechercheAvecLocation(1500, location);
-            } catch (e) {
-                console.log("ERREUR DE GPS:", e);
-            }
+                console.log(mapRef.current)
+            }, 100);
         }
-
-        getCurrentLocation();
-    }, []);
-
-    
-    if (errorMsg) {
-        return (
-            <View style={styles.main}>
-                <Text>{errorMsg}</Text>
-            </View>
-        );
-    }
-
-    if (!location) {
-        return (
-            <View style={styles.main}>
-                <Text>Chargement de la localisation...</Text>
-            </View>
-        );
-    }
-
-
-
+    }, [params.maLatitude, params.maLongitude, params.latitude, params.longitude]);
 
     return (
         <View style={styles.main}>
-            <MapView
+            <MapView 
+                ref={mapRef} 
                 initialRegion={{
-                    latitude: location.latitude,
-                    longitude: location.longitude,
-                    latitudeDelta: location.latitudeDelta,
-                    longitudeDelta: location.longitudeDelta,
+                    latitude: parseFloat(params.maLatitude),
+                    longitude: parseFloat(params.maLongitude),
+                    latitudeDelta: 0.01,
+                    longitudeDelta: 0.01,
                 }}
                 style={styles.map}
-            />
+            >
+                <Marker 
+                    coordinate={{ 
+                        latitude: parseFloat(params.maLatitude), 
+                        longitude: parseFloat(params.maLongitude) 
+                    }} 
+                    title='Ma localisation actuelle'
+                />
+                <Marker 
+                    coordinate={{ 
+                        latitude: parseFloat(params.latitude), 
+                        longitude: parseFloat(params.longitude) 
+                    }} 
+                    title={params.nom} 
+                    description={params.description}
+                />
+            </MapView>
         </View>
     )
-
-
 }
 
 
-const styles = StyleSheet.create(
-
-    {
-        main: {
-            alignItems: 'center',
-            flex: 1,
-            gap: 10,
-            paddingTop: 20,
-        },
-        text: {
-            fontSize: 20,
-            fontWeight: 'bold'
-        },
-        map: {
-            width: '100%',
-            height: '100%',
-        },
-        slider: {
-            flexDirection: 'row',
-            justifyContent: 'center',
-            alignItems: 'center',
-            height: 100
-            //flex: 1,
-        },
-        textSlider: {
-            width: 70,
-            textAlign: 'center'
-        },
-        flat: {
-            width: '100%',
-            //backgroundColor: '#ADD8E6',
-        },
-        titleText: {
-            fontSize: 24,
-        }
+const styles = StyleSheet.create({
+    main: {
+        alignItems: 'center',
+        flex: 1,
+        gap: 10,
+        paddingTop: 20,
+    },
+    text: {
+        fontSize: 20,
+        fontWeight: 'bold'
+    },
+    map: {
+        width: '100%',
+        height: '100%',
+    },
+    slider: {
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+        height: 100
+    },
+    textSlider: {
+        width: 70,
+        textAlign: 'center'
+    },
+    flat: {
+        width: '100%',
+    },
+    titleText: {
+        fontSize: 24,
     }
-)
+})
 
-export default pageCarte;
+export default PageCarte;
