@@ -1,7 +1,8 @@
 import { useLocalSearchParams } from 'expo-router';
 import { useEffect, useRef } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { View } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
+import { styles } from '../../assets/libs/styles';
 
 
 const PageCarte = () => {
@@ -20,7 +21,7 @@ const PageCarte = () => {
                     edgePadding: { top: 50, right: 50, bottom: 50, left: 50 },
                     animated: true,
                 });
-                console.log(mapRef.current)
+                //console.log(mapRef.current)
             }, 100);
         }
     }, [params.maLatitude, params.maLongitude, params.latitude, params.longitude]);
@@ -49,6 +50,7 @@ const PageCarte = () => {
                         latitude: parseFloat(params.latitude), 
                         longitude: parseFloat(params.longitude) 
                     }} 
+                    pinColor='green'
                     title={params.nom} 
                     description={params.description}
                 />
@@ -58,37 +60,6 @@ const PageCarte = () => {
 }
 
 
-const styles = StyleSheet.create({
-    main: {
-        alignItems: 'center',
-        flex: 1,
-        gap: 10,
-        paddingTop: 20,
-    },
-    text: {
-        fontSize: 20,
-        fontWeight: 'bold'
-    },
-    map: {
-        width: '100%',
-        height: '100%',
-    },
-    slider: {
-        flexDirection: 'row',
-        justifyContent: 'center',
-        alignItems: 'center',
-        height: 100
-    },
-    textSlider: {
-        width: 70,
-        textAlign: 'center'
-    },
-    flat: {
-        width: '100%',
-    },
-    titleText: {
-        fontSize: 24,
-    }
-})
+
 
 export default PageCarte;

@@ -2,16 +2,18 @@ import Slider from '@react-native-community/slider';
 import * as Location from 'expo-location';
 import { router } from "expo-router";
 import { useEffect, useState } from 'react';
-import { FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-
+import { FlatList, TouchableOpacity, View } from 'react-native';
 import { commerces } from '../../assets/libs/donnees.js';
+import { styles } from '../../assets/libs/styles';
+import CustomText from "../../components/CustomText";
 
 const pageCoordonnee = () => {
     const [location, setLocation] = useState(null);
     const [errorMsg, setErrorMsg] = useState("");
-    const [valeurSlide, setValeurSlide] = useState(1500)
+    const [valeurSlide, setValeurSlide] = useState(0)
     const [filteredData, setFilteredData] = useState([]);
     const [valeurFormule, setValeurFormule] = useState(0.00)
+    const [distance , setDistance] = useState([])
 
     useEffect(() => {
         async function getCurrentLocation() {
@@ -27,7 +29,7 @@ const pageCoordonnee = () => {
                     accuracy: Location.Accuracy.High
                 });
                 setLocation(location)
-                filtrerRechercheAvecLocation(1500, location);
+                filtrerRechercheAvecLocation(0, location);
             } catch (e) {
                 console.log("ERREUR DE GPS:", e);
             }
@@ -35,10 +37,6 @@ const pageCoordonnee = () => {
 
         getCurrentLocation();
     }, []);
-
-
-
-    
 
     const filtrerRechercheAvecLocation = (value, loc) => {
 
@@ -63,6 +61,7 @@ const pageCoordonnee = () => {
             const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 
             const d = 6371 * c * 1000;
+            setDistance(d)
             return d <= value
         });
         setFilteredData(commercesFiltre)
@@ -70,20 +69,28 @@ const pageCoordonnee = () => {
     }
 
     const pageCarte = (item) => {
-        router.push({pathname: 'pages/pageCarte' , params:{id: String(item.id), 
-                                                            nom: item.nom, 
-                                                            description: item.description, 
-                                                            latitude: String(item.latitude),
-                                                            longitude: String(item.longitude),
-                                                            maLatitude: String(location.coords.latitude),
-                                                            maLongitude: String(location.coords.longitude)}})
+        router.push({
+            pathname: 'pages/pageCarte', params: {
+                id: String(item.id),
+                nom: item.nom,
+                description: item.description,
+                latitude: String(item.latitude),
+                longitude: String(item.longitude),
+                maLatitude: String(location.coords.latitude),
+                maLongitude: String(location.coords.longitude)
+            }
+        })
     }
 
 
     const renderListItem = ({ item }) => (
-        <TouchableOpacity onPress={() => pageCarte(item)}>
-            <Text style={styles.titleText}>{item.nom}</Text>
-        </TouchableOpacity>
+        <View style={styles.sliderMain}>
+            <TouchableOpacity style={styles.sliderView} onPress={() => pageCarte(item)}>
+                <CustomText style={styles.sliderItem}>{item.nom}</CustomText>
+                
+            </TouchableOpacity>
+        </View>
+
 
     );
     const filtrerRecherche = (value) => {
@@ -99,31 +106,32 @@ const pageCoordonnee = () => {
     }
 
     return (
-        <View style={styles.main}>
-            <Text style={styles.text}>Position actuelle:</Text>
+        <View style={styles.mainPageCoord}>
+            <CustomText style={styles.text}>Position actuelle:</CustomText>
 
             {errorMsg ? (
-                <Text>{errorMsg}</Text>
+                <CustomText style={styles.textSlider}>{errorMsg}</CustomText>
             ) : location ? (
                 <>
-                    <Text>Latitude: {location.coords.latitude}</Text>
-                    <Text>Longitude: {location.coords.longitude}</Text>
+                    <CustomText style={styles.textSlider}>Latitude: {location.coords.latitude}</CustomText>
+                    <CustomText style={styles.textSlider}>Longitude: {location.coords.longitude}</CustomText>
                     <View style={styles.slider}>
                         <Slider
-                            style={{ width: 200, height: 40 }}
+                            style={{ width: 200, height: 40}}
                             minimumValue={0}
                             maximumValue={3000}
-                            minimumTrackTintColor="#FFFFFF"
-                            maximumTrackTintColor="#000000"
+                            minimumTrackTintColor="#007AFF"
+                            maximumTrackTintColor="#1800F2"
+                            thumbTintColor = 'purple'
                             onValueChange={(value) => filtrerRecherche(value)}
                             value={valeurSlide}
                         />
-                        <Text style={styles.textSlider}>
-                            {Math.round(valeurSlide)}
-                        </Text>
+                        <CustomText style={styles.textSlider}>
+                            { `${Math.round(valeurSlide)} mètres`}
+                        </CustomText>
                     </View>
                     <FlatList
-                    
+
                         style={styles.flat}
                         data={filteredData}
                         renderItem={renderListItem}
@@ -133,43 +141,11 @@ const pageCoordonnee = () => {
 
                 </>
             ) : (
-                <Text>Chargement...</Text>
+                <CustomText>Chargement...</CustomText>
             )}
         </View>
     );
 }
-const styles = StyleSheet.create(
 
-    {
-        main: {
-            alignItems: 'center',
-            flex: 1,
-            gap: 10,
-            paddingTop: 20,
-        },
-        text: {
-            fontSize: 20,
-            fontWeight: 'bold'
-        },
-        slider: {
-            flexDirection: 'row',
-            justifyContent: 'center',
-            alignItems: 'center',
-            height: 100
-            //flex: 1,
-        },
-        textSlider: {
-            width: 70,
-            textAlign: 'center'
-        },
-        flat: {
-            width: '100%',
-            //backgroundColor: '#ADD8E6',
-        },
-        titleText: {
-            fontSize: 24,
-        }
-    }
-)
 
 export default pageCoordonnee;
