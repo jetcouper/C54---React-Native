@@ -7,7 +7,7 @@ export const styles = StyleSheet.create(
             alignItems: 'center',
             flex: 1,
             gap: 10,
-            paddingTop: 20,
+            paddingTop: 10,
             backgroundColor: 'lightblue'
         },
         mainPageCoord: {
@@ -19,7 +19,6 @@ export const styles = StyleSheet.create(
         },
         text: {
             fontSize: 24,
-            //fontWeight: 'bold',
             color: 'purple'
         },
         map: {
@@ -68,12 +67,14 @@ export const styles = StyleSheet.create(
         },
         textTitre: {
             fontSize: 40,
+            //fontWeight: 'bold',
+            color: 'purple'
         },
         lien: {
             marginTop: 30,
             paddingVertical: 12,
             paddingHorizontal: 30,
-            backgroundColor: '#FF3B30', // Rouge
+            backgroundColor: '#7d38ffff', 
             borderRadius: 8,
             fontSize: 16,
             fontWeight: '600',
@@ -86,7 +87,7 @@ export const styles = StyleSheet.create(
             elevation: 5,
         },
         lienPressed: {
-            backgroundColor: '#FF0E00', // Bleu plus foncé
+            backgroundColor: '#6f00ffff',
             shadowOpacity: 0.4,
             shadowRadius: 2,
             elevation: 2,
@@ -95,6 +96,39 @@ export const styles = StyleSheet.create(
         image: {
             width: 400,
             height: 350,
+        },
+        legendsContainer: {
+            flexDirection: 'column',
+            justifyContent: 'flex-start',
+            alignItems: 'flex-start',
+            width: '100%',
+            paddingLeft: 10
+        },
+        legendItem: {
+            flexDirection: 'row',
+            alignItems: 'center',
+            gap: 8
+        },
+        pointOrange: {
+            backgroundColor: "orange",
+            width: 10,
+            height: 10,
+            borderRadius: 10 / 2, 
+        },
+        pointBleu: {
+            backgroundColor: "blue",
+            width: 10,
+            height: 10,
+            borderRadius: 10 / 2, 
+        },
+        pointVert: {
+            backgroundColor: "green",
+            width: 10,
+            height: 10,
+            borderRadius: 10 / 2, 
+        },
+        textMauveSeul: {
+            color: 'purple'
         },
     }
 )

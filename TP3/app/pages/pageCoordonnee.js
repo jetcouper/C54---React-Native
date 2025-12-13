@@ -61,7 +61,8 @@ const pageCoordonnee = () => {
             const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 
             const d = 6371 * c * 1000;
-            setDistance(d)
+            commerce.distance = d
+            //setDistance(d)
             return d <= value
         });
         setFilteredData(commercesFiltre)
@@ -72,6 +73,8 @@ const pageCoordonnee = () => {
         router.push({
             pathname: 'pages/pageCarte', params: {
                 id: String(item.id),
+                autreCommerces: JSON.stringify(filteredData.filter(com => com.id !== item.id)),
+                rayon: String(valeurSlide),
                 nom: item.nom,
                 description: item.description,
                 latitude: String(item.latitude),
@@ -87,7 +90,7 @@ const pageCoordonnee = () => {
         <View style={styles.sliderMain}>
             <TouchableOpacity style={styles.sliderView} onPress={() => pageCarte(item)}>
                 <CustomText style={styles.sliderItem}>{item.nom}</CustomText>
-                
+                <CustomText style={styles.sliderItem}>{`${Math.round(item.distance)} mètres`}</CustomText>
             </TouchableOpacity>
         </View>
 

@@ -12,8 +12,8 @@ export default function Index() {
 
   return (
     <View style={styles.main}>
-      <CustomText  style={styles.text}>Application TP3</CustomText >
-      <CustomText >Ville: Saint-Basile-Le-Grand</CustomText >
+      <CustomText  style={styles.textTitre}>Application TP3</CustomText >
+      <CustomText style={styles.titleText}>Ville: Saint-Basile-Le-Grand</CustomText >
       <Image style={styles.image} resizeMode="contain" source={imageVille}></Image>
       <Link href="pages/pageCoordonnee" asChild>
       <Pressable>
