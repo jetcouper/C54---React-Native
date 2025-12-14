@@ -1,19 +1,29 @@
+// La composante permettant d'aller chercher les paramètres envoyés depuis le router.push
 import { useLocalSearchParams } from 'expo-router';
 import { useEffect, useRef, useState } from 'react';
 import { View } from 'react-native';
+// Composant de la carte et des marqueurs
 import MapView, { Circle, Marker } from 'react-native-maps';
 import { styles } from '../../assets/libs/styles';
+// Composant personnalisé pour le texte avec le font spécifique
 import CustomText from "../../components/CustomText";
 
 
 const PageCarte = () => {
+    // Récupération des paramètres pour la carte
     const params = useLocalSearchParams();
+    // Le rayon du cercle autour de la position
     const rayon = parseFloat(params.rayon);
+    // Référence pour la carte
     const mapRef = useRef(null);
+    //Le centre défini pour le cercle
     const [centre, setCentre] = useState(null)
+    //Les autres commerces affichers sur la carte
     const [autreCommerces, setAutreCommerces] = useState([])
+    //État pour vérifier si la carte est prête
     const [isMapReady, setIsMapReady] = useState(false)
 
+    //Quand les paramètres changent, on met à jour le centre et les autres commerces
     useEffect(() => {
         if (params.maLatitude && params.maLongitude && params.latitude && params.longitude) {
             setCentre({ latitude: parseFloat(params.maLatitude), longitude: parseFloat(params.maLongitude) })
@@ -21,6 +31,7 @@ const PageCarte = () => {
         }
     }, [params.maLatitude, params.maLongitude, params.latitude, params.longitude]);
 
+    //Quand la carte est prête, on ajuste la vue pour inclure les deux marqueurs
     useEffect(() => {
         if (isMapReady && mapRef.current && params.maLatitude && params.maLongitude && params.latitude && params.longitude) {
             const coordinates = [
@@ -53,7 +64,7 @@ const PageCarte = () => {
                     <CustomText style={styles.textMauveSeul}>Commerce sélectionné</CustomText>
                 </View>
             </View>
-
+            {/* La carte avec les marqueurs et le cercle */}
             <MapView
                 ref={mapRef}
                 initialRegion={{
@@ -65,6 +76,7 @@ const PageCarte = () => {
                 style={styles.map}
                 onMapReady={() => setIsMapReady(true)}
             >
+                {/* Cercle représentant le rayon autour de la position */}
                 <Circle
                     center={centre}
                     radius={rayon}
@@ -72,8 +84,8 @@ const PageCarte = () => {
                     strokeColor={'#1a66ff'}
                     fillColor={'rgba(230,238,255,0.5)'}
                 />
-                {
-                    autreCommerces.map((commerce, index) => (
+                {/* Pour chaque commerce dans le rayon, on place un marqueur bleu */}
+                {autreCommerces.map((commerce, index) => (
                         <Marker
                             key={index}
                             coordinate={{
@@ -85,7 +97,7 @@ const PageCarte = () => {
                             description={commerce.description}
                         />
                     ))}
-
+                {/* Marqueur pour la position actuelle (orange) et le commerce sélectionné (vert) */}
                 <Marker
                     coordinate={{
                         latitude: parseFloat(params.maLatitude),
@@ -107,8 +119,4 @@ const PageCarte = () => {
         </View>
     )
 }
-
-
-
-
 export default PageCarte;

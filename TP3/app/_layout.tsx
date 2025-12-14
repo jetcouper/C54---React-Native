@@ -1,12 +1,13 @@
+import { useFonts } from 'expo-font';
 import { Stack } from "expo-router";
 import React from "react";
-import { useFonts } from 'expo-font';
 
 export default function RootLayout() {
+  //Ajout de la police d'écriture principale
   const [fontsLoaded] = useFonts({
     'font-principale': require('../assets/font/StoryScript-Regular.ttf'),
   });
-
+  //Si le font n'est pas trouvé, on ne charge pas la police
   if (!fontsLoaded) return null;
 
   return (<Stack>

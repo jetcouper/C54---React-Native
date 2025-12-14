@@ -67,7 +67,6 @@ export const styles = StyleSheet.create(
         },
         textTitre: {
             fontSize: 40,
-            //fontWeight: 'bold',
             color: 'purple'
         },
         lien: {
